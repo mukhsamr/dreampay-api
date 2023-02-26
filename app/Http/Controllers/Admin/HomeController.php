@@ -61,8 +61,10 @@ class HomeController extends Controller
         ];
 
         try {
-            $user = User::where('id', $request->id)->update($data);
-            return response()->json($user);
+            $find = User::find($request->id);
+            $find->update($data);
+
+            return response()->json($find);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Gagal Edit User',
@@ -71,11 +73,13 @@ class HomeController extends Controller
         }
     }
 
-    public function destoryUser(User $user)
+    public function destroyUser(User $user)
     {
         try {
             $user->delete();
-            return response()->json();
+            return response()->json([
+                'message' => 'Berhasil Hapus User'
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Gagal Hapus User',

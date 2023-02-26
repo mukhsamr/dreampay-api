@@ -11,7 +11,7 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         if ($user = User::firstWhere('no_hp', $request->no_hp)) {
-            return (new UserResource($user));
+            return response()->json($user);
         }
 
         return response()->json([

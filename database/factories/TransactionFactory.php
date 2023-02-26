@@ -13,7 +13,7 @@ class TransactionFactory extends Factory
             'nota' => fake()->unique()->numerify('########'),
             'pengirim' => User::where('tipe', 'B')->get()->random()->id,
             'penerima' => User::where('tipe', 'S')->get()->random()->id,
-            'nominal' => rand(1, 1000) * 1000,
+            'nominal' => rand(1, 100) * 1000,
         ];
     }
 }

@@ -44,7 +44,7 @@ Route::prefix('admin')->controller(AdminHome::class)->group(function () {
     Route::get('list-user', 'listUser');
     Route::post('add-user', 'storeUser');
     Route::patch('edit-user', 'updateUser');
-    Route::delete('delete-user/{user}', 'destroyUser');
+    Route::delete('delete-user', 'destroyUser');
 
 
     // Transaksi

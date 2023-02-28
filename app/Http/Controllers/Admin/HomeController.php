@@ -73,8 +73,9 @@ class HomeController extends Controller
         }
     }
 
-    public function destroyUser(User $user)
+    public function destroyUser(Request $request)
     {
+        $user = User::find($request->user_id);
         try {
             $user->delete();
             return response()->json([

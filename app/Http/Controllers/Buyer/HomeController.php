@@ -45,7 +45,7 @@ class HomeController extends Controller
             'nota' => $nota,
             'pengirim' => $request->buyer_id,
             'penerima' => $seller->id,
-            'nominal' => $request->nominal
+            'nominal' => str_replace('.', '', $request->nominal)
         ];
 
         try {

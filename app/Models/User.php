@@ -19,7 +19,7 @@ class User extends Authenticatable
 
     public function cashierTopups()
     {
-        return $this->hasMany(Withdraw::class, 'pengirim');
+        return $this->hasMany(Topup::class, 'pengirim');
     }
 
     public function buyerTransactions()

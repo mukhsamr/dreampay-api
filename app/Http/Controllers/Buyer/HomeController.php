@@ -20,13 +20,21 @@ class HomeController extends Controller
         $total_transaction = $user->buyerTransactions->sum('nominal');
 
         return response()->json([
-            'saldo' => $total_topup - $total_transaction,
+            'saldo' => number_format($total_topup - $total_transaction),
 
-            'total_topup' => $total_topup,
-            'total_pengeluaran' => $total_transaction,
+            'total_topup' => number_format($total_topup),
+            'total_pengeluaran' => number_format($total_transaction),
 
-            'list_topup' => $user->buyerTopups()->withPengirim()->orderByDesc('created_at')->get(),
-            'list_pengeluaran' => $user->buyerTransactions()->withPenerima()->orderByDesc('created_at')->get()
+            'list_topup' => $user->buyerTopups()
+                ->withPengirim()
+                ->orderByDesc('created_at')
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
+            'list_pengeluaran' => $user->buyerTransactions()
+                ->withPenerima()
+                ->orderByDesc('created_at')
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 

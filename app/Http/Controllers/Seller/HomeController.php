@@ -22,18 +22,20 @@ class HomeController extends Controller
 
         return response()->json([
             'qrcode' => $qrcode,
-            'saldo' => $pemasukan - $penarikan,
-            'pemasukan' => $pemasukan,
-            'penarikan' => $penarikan,
+            'saldo' => number_format($pemasukan - $penarikan),
+            'pemasukan' => number_format($pemasukan),
+            'penarikan' => number_format($penarikan),
 
             'list_pemasukan' => $user->sellerTransactions()
                 ->withPengirim()
                 ->orderByDesc('created_at')
-                ->get(),
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
             'list_penarikan' => $user->sellerWithdraws()
                 ->withPengirim()
                 ->orderByDesc('created_at')
                 ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 }

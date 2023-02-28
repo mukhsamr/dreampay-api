@@ -18,6 +18,7 @@ class HomeController extends Controller
             'list_topup' => $user->cashierTopups()
                 ->withPenerima()
                 ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal))
         ]);
     }
 

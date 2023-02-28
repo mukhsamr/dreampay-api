@@ -17,9 +17,9 @@ class HomeController extends Controller
         $withdraw = Withdraw::sum('nominal');
 
         return response()->json([
-            'total_saldo' => $seller - $withdraw,
-            'total_seller' => $seller,
-            'total_withdraw' => $withdraw,
+            'total_saldo' => number_format($seller - $withdraw),
+            'total_seller' => number_format($seller),
+            'total_withdraw' => number_format($withdraw),
         ]);
     }
 
@@ -93,7 +93,7 @@ class HomeController extends Controller
     public function listTransaction()
     {
         return response()->json([
-            'list_transaksi' => Transaction::orderByDesc('created_at')->get()
+            'list_transaksi' => Transaction::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 
@@ -102,7 +102,7 @@ class HomeController extends Controller
     {
         return response()->json([
             'list_buyer' => User::where('tipe', 'B')->orderBy('nama')->get(),
-            'list_topup' => Topup::orderByDesc('created_at')->get()
+            'list_topup' => Topup::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 
@@ -139,7 +139,7 @@ class HomeController extends Controller
     {
         return response()->json([
             'list_buyer' => User::where('tipe', 'B')->orderBy('nama')->get(),
-            'list_withdraw' => Withdraw::orderByDesc('created_at')->get()
+            'list_withdraw' => Withdraw::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 

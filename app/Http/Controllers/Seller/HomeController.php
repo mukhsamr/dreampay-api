@@ -21,7 +21,7 @@ class HomeController extends Controller
         ];
 
         return response()->json([
-            'qrcode' => base64_encode(QrCode::format('svg')->generate(json_encode($qrcode))),
+            'qrcode' => $qrcode,
             'saldo' => $pemasukan - $penarikan,
             'pemasukan' => $pemasukan,
             'penarikan' => $penarikan,

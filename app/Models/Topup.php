@@ -22,4 +22,13 @@ class Topup extends Model
                 ->take(1)
         ]);
     }
+
+    public function scopeWithPenerima($query)
+    {
+        $query->addSelect([
+            'penerima' => User::select('nama')
+                ->whereColumn('id', $this->getTable() . '.penerima')
+                ->take(1)
+        ]);
+    }
 }

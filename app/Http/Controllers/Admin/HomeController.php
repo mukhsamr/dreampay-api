@@ -146,7 +146,7 @@ class HomeController extends Controller
     public function listWithdraw()
     {
         return response()->json([
-            'list_buyer' => User::where('tipe', 'B')->orderBy('nama')->get(),
+            'list_seller' => User::where('tipe', 'S')->orderBy('nama')->get(),
             'list_withdraw' => Withdraw::orderByDesc('created_at')
                 ->withPengirim()
                 ->withPenerima()

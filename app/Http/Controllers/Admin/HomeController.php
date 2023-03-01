@@ -93,7 +93,11 @@ class HomeController extends Controller
     public function listTransaction()
     {
         return response()->json([
-            'list_transaksi' => Transaction::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
+            'list_transaksi' => Transaction::orderByDesc('created_at')
+                ->withPengirim()
+                ->withPenerima()
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 

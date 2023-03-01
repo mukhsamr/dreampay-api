@@ -106,7 +106,11 @@ class HomeController extends Controller
     {
         return response()->json([
             'list_buyer' => User::where('tipe', 'B')->orderBy('nama')->get(),
-            'list_topup' => Topup::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
+            'list_topup' => Topup::orderByDesc('created_at')
+                ->withPengirim()
+                ->withPenerima()
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 
@@ -143,7 +147,11 @@ class HomeController extends Controller
     {
         return response()->json([
             'list_buyer' => User::where('tipe', 'B')->orderBy('nama')->get(),
-            'list_withdraw' => Withdraw::orderByDesc('created_at')->get()->each(fn ($v) => $v->nominal = number_format($v->nominal)),
+            'list_withdraw' => Withdraw::orderByDesc('created_at')
+                ->withPengirim()
+                ->withPenerima()
+                ->get()
+                ->each(fn ($v) => $v->nominal = number_format($v->nominal)),
         ]);
     }
 

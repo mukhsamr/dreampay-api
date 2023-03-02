@@ -157,6 +157,12 @@ class HomeController extends Controller
 
     public function storeWithdraw(Request $request)
     {
+        if (!$this->getSaldoSeller($request->seller_id)) {
+            return response()->json([
+                'message' => 'Saldo tidak cukup',
+            ], 403);
+        }
+
         $nota = 'WD' . $request->admin_id . substr(time(), 4, 6);
 
         $data = [
@@ -181,5 +187,14 @@ class HomeController extends Controller
                 'error' => $th->getMessage()
             ]);
         }
+    }
+
+    public function getSaldoSeller($seller_id)
+    {
+        $user = User::withSum('sellerTransactions as masuk', 'nominal')
+            ->withSum('sellerWithdraws as withdraw', 'nominal')
+            ->find($seller_id);
+
+        return $user->masuk - $user->withdraw > 0;
     }
 }

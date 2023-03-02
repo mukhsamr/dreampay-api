@@ -80,6 +80,6 @@ class HomeController extends Controller
             ->withSum('buyerTransactions as transaction', 'nominal')
             ->find($buyer_id);
 
-        return $user->topup - $user->transaction >= 0;
+        return $user->topup - $user->transaction > 0;
     }
 }

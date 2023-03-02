@@ -13,11 +13,13 @@ class HomeController extends Controller
 {
     public function home()
     {
+        $topup = Topup::sum('nominal');
         $seller = Transaction::sum('nominal');
         $withdraw = Withdraw::sum('nominal');
 
         return response()->json([
             'total_saldo' => number_format($seller - $withdraw),
+            'total_buyer' => number_format($topup - $seller),
             'total_seller' => number_format($seller),
             'total_withdraw' => number_format($withdraw),
         ]);

@@ -40,7 +40,8 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
-        if (!$this->getSaldo($request->buyer_id)) {
+        $nominal = str_replace('.', '', $request->nominal);
+        if (!$this->getSaldo($request->buyer_id, $nominal)) {
             return response()->json([
                 'message' => 'Saldo tidak cukup',
             ], 403);
@@ -53,7 +54,7 @@ class HomeController extends Controller
             'nota' => $nota,
             'pengirim' => $request->buyer_id,
             'penerima' => $seller->id,
-            'nominal' => str_replace('.', '', $request->nominal)
+            'nominal' => $nominal
         ];
 
         try {
@@ -74,12 +75,12 @@ class HomeController extends Controller
 
     // 
 
-    private function getSaldo($buyer_id): bool
+    private function getSaldo($buyer_id, $nominal): bool
     {
         $user = User::withSum('buyerTopups as topup', 'nominal')
             ->withSum('buyerTransactions as transaction', 'nominal')
             ->find($buyer_id);
 
-        return $user->topup - $user->transaction > 0;
+        return $user->topup - $nominal - $user->transaction > 0;
     }
 }

@@ -197,6 +197,6 @@ class HomeController extends Controller
             ->withSum('sellerWithdraws as withdraw', 'nominal')
             ->find($seller_id);
 
-        return $user->masuk - $nominal - $user->withdraw > 0;
+        return $user->masuk - $nominal - $user->withdraw >= 0;
     }
 }

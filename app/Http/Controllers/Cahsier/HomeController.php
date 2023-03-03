@@ -17,6 +17,7 @@ class HomeController extends Controller
                 ->get(),
             'list_topup' => $user->cashierTopups()
                 ->withPenerima()
+                ->orderByDesc('created_at')
                 ->get()
                 ->each(fn ($v) => $v->nominal = number_format($v->nominal))
         ]);

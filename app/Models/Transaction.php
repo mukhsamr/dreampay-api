@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Transaction extends Model
 {
@@ -11,7 +13,12 @@ class Transaction extends Model
 
     const UPDATED_AT = NULL;
     protected $guarded = ['id'];
-    protected $casts = ['created_at' => 'datetime:d/m/Y H:i:'];
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('d/m/Y H:i');
+    }
+
 
     // Scope
     public function scopeWithPenerima($query)

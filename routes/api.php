@@ -32,6 +32,7 @@ Route::prefix('seller')->controller(SellerHome::class)->group(function () {
 // Cashier
 Route::prefix('cashier')->controller(CashierHome::class)->group(function () {
     Route::get('{user}', 'home');
+    Route::get('total/{user}', 'total');
     Route::post('topup', 'store');
 });
 

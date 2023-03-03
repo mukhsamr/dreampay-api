@@ -23,8 +23,21 @@ class HomeController extends Controller
         ]);
     }
 
+    public function total(User $user)
+    {
+        return response()->json([
+            'total_masuk' => number_format($user->cashierTopups()->sum('nominal'))
+        ]);
+    }
+
     public function store(Request $request)
     {
+        if (!$request->buyer_id) {
+            return response()->json([
+                'message' => 'User belum dipilih',
+            ], 401);
+        }
+
         $nota = 'TP' . $request->cashier_id . substr(time(), 4, 6);
 
         $data = [

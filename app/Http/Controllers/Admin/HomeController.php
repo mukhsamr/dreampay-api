@@ -18,9 +18,9 @@ class HomeController extends Controller
         $withdraw = Withdraw::sum('nominal');
 
         return response()->json([
-            'total_saldo' => number_format($seller - $withdraw),
+            'total_saldo' => number_format($topup - $withdraw),
             'total_buyer' => number_format($topup - $seller),
-            'total_seller' => number_format($seller),
+            'total_seller' => number_format($seller - $withdraw),
             'total_withdraw' => number_format($withdraw),
         ]);
     }

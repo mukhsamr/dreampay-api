@@ -199,4 +199,59 @@ class HomeController extends Controller
 
         return $user->masuk - $nominal - $user->withdraw >= 0;
     }
+
+    public function bestSeller()
+    {
+        $seller = User::where('tipe', 'S')
+            ->select('id', 'nama', 'no_hp')
+            ->withSum('sellerTransactions as pemasukan', 'nominal')
+            ->orderByDesc('pemasukan')
+            ->get()
+            ->each(fn ($v) => $v->pemasukan = number_format($v->pemasukan));
+
+        return response()->json([
+            'rekap' => $seller
+        ]);
+    }
+
+    public function bestBuyer()
+    {
+        $buyer = User::where('tipe', 'B')
+            ->select('id', 'nama', 'no_hp')
+            ->withSum('buyerTransactions as pengeluaran', 'nominal')
+            ->orderByDesc('pengeluaran')
+            ->get()
+            ->each(fn ($v) => $v->pengeluaran = number_format($v->pengeluaran));
+
+        return response()->json([
+            'rekap' => $buyer
+        ]);
+    }
+
+    public function bestTopup()
+    {
+        $buyer = User::where('tipe', 'B')
+            ->select('id', 'nama', 'no_hp')
+            ->withSum('buyerTopups as topup', 'nominal')
+            ->orderByDesc('topup')
+            ->get()
+            ->each(fn ($v) => $v->topup = number_format($v->topup));
+
+        return response()->json([
+            'total' => $buyer->count(),
+            'rekap' => $buyer,
+        ]);
+    }
+
+    public function report()
+    {
+        $cahierTopup = Topup::withPengirim()
+            ->withPenerima()
+            ->get()
+            ->groupBy('pengirim');
+
+        return response()->json([
+            'cahierTopup' => $cahierTopup,
+        ]);
+    }
 }

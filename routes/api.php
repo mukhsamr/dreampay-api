@@ -60,4 +60,11 @@ Route::prefix('admin')->controller(AdminHome::class)->group(function () {
     // Withdraw
     Route::get('list-withdraw', 'listWithdraw');
     Route::post('add-withdraw', 'storeWithdraw');
+
+
+    // Rekap
+    Route::get('bestSeller', 'bestSeller');
+    Route::get('bestBuyer', 'bestBuyer');
+    Route::get('bestTopup', 'bestTopup');
+    Route::get('report', 'report');
 });

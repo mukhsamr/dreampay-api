@@ -206,8 +206,7 @@ class HomeController extends Controller
             ->select('id', 'nama', 'no_hp')
             ->withSum('sellerTransactions as pemasukan', 'nominal')
             ->orderByDesc('pemasukan')
-            ->get()
-            ->each(fn ($v) => $v->pemasukan = number_format($v->pemasukan));
+            ->get();
 
         return response()->json([
             'rekap' => $seller
@@ -218,10 +217,11 @@ class HomeController extends Controller
     {
         $buyer = User::where('tipe', 'B')
             ->select('id', 'nama', 'no_hp')
+            ->withSum('buyerTopups as topup', 'nominal')
             ->withSum('buyerTransactions as pengeluaran', 'nominal')
             ->orderByDesc('pengeluaran')
             ->get()
-            ->each(fn ($v) => $v->pengeluaran = number_format($v->pengeluaran));
+            ->each(fn ($v) => $v->saldo = $v->topup - $v->pengeluaran);
 
         return response()->json([
             'rekap' => $buyer
